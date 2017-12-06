@@ -1,0 +1,6 @@
+<h1> Confirm Address </h1>
+<% unless current_user %>
+  <h3> <%= link_to 'sign up', 'users/sign_up' %> | <%= link_to 'sign in', 'users/sign_in' %> </h3>
+<% end %>
+
+<%= render '/users/address_form', locals: @product_type %>

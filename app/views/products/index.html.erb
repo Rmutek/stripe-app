@@ -1,0 +1,35 @@
+<h1>Products</h1>
+<div class="row">
+  <% @products.each do |product| %>
+    <div class="col">
+      <div class="card" style="width:20rem;"> 
+        <%= image_tag product.images[0], class: "card-img-top" %>
+        <div class="card-block m-2">
+          <div class="card-title">
+            <h3><%= product.name %></h3>
+          </div>
+          <div class="card-text">
+            <%= form_for :carted_product, url: '/carted_products' do |f| %>
+              <div class="form-group">
+                <%= f.label :quantity %>
+                <%= f.select :quantity, options_for_select((1..StripeTool.product_quantity(product)).to_a), class: "form-control" %>
+              </div>
+              <div class="form-group">
+                <%= f.label :options %>
+                <%= f.select :option, options_for_select(product.skus.collect{ |sku| [sku.attributes.bean_style, sku.id] }), class: "form-control"  %>
+              </div>
+              <div class="form-group">
+                <%= f.label :product_type %>
+                <%= f.select :product_type, options_for_select(['One Time Buy', 'Weekly', 'Bimonthly', 'Monthly']), class: "form-control"  %>
+              </div>
+              <%= f.hidden_field 'product_id', value: product.id %>
+              <%= f.hidden_field 'amount', value: product.skus.first.price %>
+              <%= f.hidden_field 'name', value: product.name %>
+              <%= f.submit 'Add to Cart', class: "btn btn-primary btn-sm" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

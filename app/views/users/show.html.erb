@@ -1,0 +1,65 @@
+<h4> Account for: <%= @user.email %> </h4>
+<br />
+<h5> Your Active Subscriptions </h5>
+<% if @user.carted_products.where(status: 'subscribed').empty? %>
+  <p> You have no active subscriptions </p>
+<% else %>
+  <table class="table">
+    <% @user.carted_products.where(status: 'subscribed').each do |carted_product| %>
+      <tr>
+        <td><%= carted_product.name %></td>
+        <td><%= carted_product.order_id %></td>
+        <td><%= carted_product.product_type %></td>
+        <td><%= carted_product.quantity %></td>
+        <td><%= number_to_currency(carted_product.amount * 0.01) %></td>
+        <td><%= number_to_currency((carted_product.quantity * carted_product.amount) * 0.01 ) %></td>
+        <td><%= link_to 'Remove', "/subscriptions/#{carted_product.id}", 'data-method' => :delete, class: 'btn btn-danger btn-sm' %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
+
+<% unless @user.carted_products.where(status: 'cancelled').empty? %>
+  <h5> Your Cancelled Subscriptions </h5>
+  <table class="table">
+    <% @user.carted_products.where(status: 'cancelled').each do |carted_product| %>
+      <tr>
+        <td><%= carted_product.name %></td>
+        <td><%= carted_product.order_id %></td>
+        <td><%= carted_product.product_type %></td>
+        <td><%= carted_product.quantity %></td>
+        <td><%= number_to_currency(carted_product.amount * 0.01) %></td>
+        <td><%= number_to_currency(carted_product.quantity * carted_product.amount * 0.01) %></td>
+        <td><%= link_to 'Renew', "/subscriptions?carted_product_id=#{carted_product.id}", 'data-method' => :post, class: 'btn btn-warning btn-sm' %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
+
+<% unless @orders.empty? %>
+  <h5> Your Previous Orders </h5>
+  <table class="table">
+    <tr>
+      <th>Date</th>
+      <th>Order Id</th>
+      <th>Order Status</th>
+      <th>Total Amount</th>
+      <th>Items</th>
+    </tr>
+    <% @orders.each do |order| %>
+      <% unless order.status == 'created' %>
+        <tr>
+          <td><%= Time.at(order.created).strftime("%m/%d/%Y") %></td>
+          <td><%= order.id %></td>
+          <td><%= order.status %></td>
+          <td><%= number_to_currency(order.amount * 0.01) %></td>
+          <td>
+            <% order.items.each do |item| %>
+              <p> <%= item.description %> <i>(<%= item.type %>, <%= number_to_currency(item.amount * 0.01) %>)</i> </p>
+            <% end %> 
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+  </table>
+<% end %>

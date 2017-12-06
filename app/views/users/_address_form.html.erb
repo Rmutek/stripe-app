@@ -1,0 +1,32 @@
+<%= form_for :user do |f| %>
+  <div class="form-group">
+    <%= f.label :first_name %>
+    <%= f.text_field :first_name, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :last_name %>
+    <%= f.text_field :last_name, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :street1 %>
+    <%= f.text_field :street1, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :street2 %>
+    <%= f.text_field :street2, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :city %>
+    <%= f.text_field :city, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :state %>
+    <%= f.text_field :state, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :zip %>
+    <%= f.text_field :zip, class: "form-control" %>
+  </div>
+  <%= f.submit 'Confirm', class: "btn btn-primary" %>
+  <%= hidden_field_tag :product_type, @product_type %>
+<% end %>

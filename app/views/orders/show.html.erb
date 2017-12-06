@@ -1,0 +1,21 @@
+<h2> Your Order </h2>
+<table class="table">
+  <tr>
+    <th>Date</th>
+    <th>Order Id</th>
+    <th>Order Status</th>
+    <th>Total Amount</th>
+    <th>Items</th>
+  </tr>
+  <tr>
+    <td><%= Time.at(@order.created).strftime("%m/%d/%Y") %></td>
+    <td><%= @order.id %></td>
+    <td><%= @order.status.titleize %></td>
+    <td><%= number_to_currency(@order.amount * 0.01) %></td>
+    <td>
+      <% @order.items.each do |item| %>
+        <p> <%= item.description %> <i>(<%= item.type %>, <%= number_to_currency(item.amount * 0.01) %>)</i> </p>
+      <% end %> 
+    </td>
+  </tr>
+</table>

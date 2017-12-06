@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Stripe-App</title>
+    <%= csrf_meta_tags %>
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-expand navbar-dark bg-primary">
+      <a class="navbar-brand" href="/">Company</a>
+      <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="/products">Products</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/carted_products">Cart</a>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav">
+            <% if user_signed_in? %>
+              <li class="nav-item">
+                <%= link_to "My Account", "/users/#{current_user.id}", class: "nav-link" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to "Sign out", destroy_user_session_path, :method => :delete, class: "nav-link" %>
+              </li>
+            <% else %>
+              <li class="nav-item">
+                <a class="nav-link" href="/users/sign_up">Sign Up</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/users/sign_in">Sign In</a>
+              </li>
+            <% end %>
+          </ul>
+      </div>
+    </nav>
+
+    <% flash.each do |name, message| %>
+      <div class="alert alert-<%= name == "alert" || name == "notice" ? "warning" : name %> alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <%= message %>
+      </div>
+    <% end %>
+    <div class="container">
+      <%= yield %>
+    </div>
+  </body>
+</html>
